@@ -3,71 +3,61 @@ import User from './User';
 import UserAddress from './UserAddress';
 
 
-
 //import B from './B';
 
 class UserList extends Component {
-    constructor(props) {
-        super(props);
-        this.showUser = this.showUser.bind(this);
-        this.state = {
-            showUserInfo: '',
-            idAddress: '',
-        }
-    };
-
-    showUser = (e) => {
-        const { userList } = this.props;
-
-        const id = e.target.id;
-
+    showUser = (id) => {
         this.setState({
-            showUserInfo: userList[id-100]
+            idUserToShow: id
         })
     };
-
-    showAddress = (e) => {
-
-        const { userList } = this.props;
-        const id = e.target.id - 1000;
-
+    showAddress = (id) => {
         this.setState({
-            idAddress: id
+            idAddressToShow: id
         });
 
 
     };
 
+    constructor(props) {
+        super(props);
+        this.showUser = this.showUser.bind(this);
+        this.state = {
+            idUserToShow: '',
+            idAddressToShow: '',
+        }
+    };
+
     render() {
         const {userList} = this.props;
-        const {showUserInfo, idAddress} = this.state;
+        const {idUserToShow, idAddressToShow} = this.state;
+        const userToDisplay = userList.filter((user) => user.id === idUserToShow)[0];
 
         return (
             <div className="userList">
-                {userList.map((user, i) => {
-                    const showUserAddress = idAddress === i ? user.address : '';
-                    return <div
-                    id={'id' + i}
-                    key = {i}
-                    className = {user.online ? ' online user' : 'offline user'}>
-                    <p
-                        className = 'userName'
-                        id={i+100}
-                        onClick={this.showUser}>
-                        {user.firstName} {user.lastName}
-                    </p>
-                    <input
-                        className = 'buttonAddress'
-                        id={i+1000}
-                        type = 'button'
-                        value = 'User address'
-                        onClick={this.showAddress}
-                    />
-                    {idAddress !== '' && <UserAddress userAddress = {showUserAddress}/>}
-                    </div>;
+                {
+                    userList.map((user) => {
+                        const id = user.id;
+                        const showUserAddress = idAddressToShow === id ? user.address : '';
+                        return <div
+                            key={id}
+                            className={user.online ? ' online user' : 'offline user'}>
+                            <p
+                                className='userName'
+                                onClick={() => this.showUser(id)}>
+                                {user.firstName} {user.lastName}
+                            </p>
+                            <input
+                                className='buttonAddress'
+                                type='button'
+                                value='User address'
+                                onClick={() => this.showAddress(id)}
+                            />
+                            {idAddressToShow !== '' && <UserAddress userAddress={showUserAddress}/>}
+                        </div>;
                     })
                 }
-                <User userInfo = {showUserInfo}/>
+                {userToDisplay && <User userInfo={userToDisplay}/>}
 
             </div>
         );
