@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.online {
+  color: darkblue;
+}
+
+.offline {
+  color: grey;
+}
+
+.userName {
+  display: inline-block;
+  width: 150px;
+}
+
+.userAddress {
+  display: inline-block;
+}
