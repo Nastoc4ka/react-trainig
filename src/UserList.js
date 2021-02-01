@@ -3,26 +3,28 @@ import User from './User';
 import UserListItem from './UserListItem';
 
 class UserList extends Component {
-    showUser = (id) => {
-        this.setState({
-            idUserToShow: id
-        })
-    };
-    showAddress = (id) => {
-        this.setState({
-            idAddressToShow: id
-        });
-
-
-    };
 
     constructor(props) {
         super(props);
-        this.showUser = this.showUser.bind(this);
         this.state = {
             idUserToShow: '',
             idAddressToShow: '',
         }
+    };
+
+    showUser = (id) => {
+        this.setState({
+            idUserToShow: id,
+            idAddressToShow: ''
+
+        })
+    };
+    showAddress = (id) => {
+        this.setState({
+            idAddressToShow: id,
+            idUserToShow: ''
+
+        });
     };
 
     render() {
@@ -39,11 +41,11 @@ class UserList extends Component {
                         const onShowUserInfo = () => this.showUser(id);
                         const onShowUserAddress = () => this.showAddress(id);
                         return <UserListItem
-                            user={user}
+                            key = {id}
+                            user = {user}
                             showUserAddress = {showUserAddress}
                             onShowUserInfo = {onShowUserInfo}
-                            onShowUserAddress ={onShowUserAddress}
-                        />
+                            onShowUserAddress = {onShowUserAddress}/>
                     })
                 }
                 {userToDisplay && <User userInfo={userToDisplay}/>}
@@ -51,7 +53,6 @@ class UserList extends Component {
             </div>
         );
     }
-
 }
 
 export default UserList;

@@ -2,23 +2,19 @@ import React from 'react';
 
 const User = (props) => {
 
-    const {userInfo: user} = props;
+    const {firstName, lastName, age, address, online} = props.userInfo;
 
-    if(user.firstName){
+    if(firstName){
         return (
-            <div className="userInfo">
-                <h2>{`${user.firstName} ${user.lastName}`}</h2>
-                <p>{`Age: ${user.age}`}</p>
-                <p>{`Address: ${user.address}`}</p>
-                <p>{`Active: ${user.online}`}</p>
-
+            <div>
+                <h2 className={online ? 'online' : 'offline'}>{`${firstName} ${lastName}`}</h2>
+                <p>{`Age: ${age}`}</p>
+                <p>{`Address: ${address}`}</p>
             </div>
         );
     }
 
         return <p>Click on user</p>
     };
-
-
 
 export default User;

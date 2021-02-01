@@ -6,11 +6,9 @@ const UserListItem = (props) => {
     const {showUserAddress, onShowUserInfo, onShowUserAddress, user: {firstName, lastName, id, online, address}} = props;
 
     return <>
-        <div
-            key={id}
-            className={online ? ' online user' : 'offline user'}>
+        <div>
             <p
-                className='userName'
+                className={online ? 'online userName' : 'offline userName'}
                 onClick={onShowUserInfo}>
                 {firstName} {lastName}
             </p>
