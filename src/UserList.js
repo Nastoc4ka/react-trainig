@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import User from './User';
-import UserAddress from './UserAddress';
-
-
-//import B from './B';
+import UserListItem from './UserListItem';
 
 class UserList extends Component {
     showUser = (id) => {
@@ -38,23 +35,15 @@ class UserList extends Component {
                 {
                     userList.map((user) => {
                         const id = user.id;
-                        const showUserAddress = idAddressToShow === id ? user.address : '';
-                        return <div
-                            key={id}
-                            className={user.online ? ' online user' : 'offline user'}>
-                            <p
-                                className='userName'
-                                onClick={() => this.showUser(id)}>
-                                {user.firstName} {user.lastName}
-                            </p>
-                            <input
-                                className='buttonAddress'
-                                type='button'
-                                value='User address'
-                                onClick={() => this.showAddress(id)}
-                            />
-                            {idAddressToShow !== '' && <UserAddress userAddress={showUserAddress}/>}
-                        </div>;
+                        const showUserAddress = idAddressToShow === id;
+                        const onShowUserInfo = () => this.showUser(id);
+                        const onShowUserAddress = () => this.showAddress(id);
+                        return <UserListItem
+                            user={user}
+                            showUserAddress = {showUserAddress}
+                            onShowUserInfo = {onShowUserInfo}
+                            onShowUserAddress ={onShowUserAddress}
+                        />
                     })
                 }
                 {userToDisplay && <User userInfo={userToDisplay}/>}
