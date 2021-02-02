@@ -37,3 +37,7 @@ code {
 .a {
   min-height: 100px;
 }
+
+.userName:hover {
+    cursor: pointer;
+}

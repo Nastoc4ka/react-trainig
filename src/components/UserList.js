@@ -32,8 +32,7 @@ class UserList extends Component {
         const {idUserToShow, idAddressToShow} = this.state;
         const userToDisplay = userList.filter((user) => user.id === idUserToShow)[0];
 
-        return (
-            <div className="userList">
+        return <div className="userList">
                 {
                     userList.map((user) => {
                         const id = user.id;
@@ -48,10 +47,9 @@ class UserList extends Component {
                             onShowUserAddress = {onShowUserAddress}/>
                     })
                 }
-                {userToDisplay && <User userInfo={userToDisplay}/>}
+                {(userToDisplay && <User userInfo={userToDisplay}/>) || <p>Click on user</p>}
 
             </div>
-        );
     }
 }
 

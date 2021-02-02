@@ -4,7 +4,7 @@ import B from './B';
 class A extends Component {
   constructor (props) {
     super(props);
-      this.updateInput = this.updateInput.bind(this);
+    this.updateInput = this.updateInput.bind(this);
     this.state = {
         inputText: 'Users',
       }
@@ -16,8 +16,7 @@ class A extends Component {
       })
     }
   render() {
-      return (
-          <div className="a">
+      return <div className="a">
               <input
                   type = 'text'
                   value = {this.state.inputText}
@@ -25,7 +24,6 @@ class A extends Component {
               />
               <B fromInput = {this.state.inputText}/>
           </div>
-      );
   }
 
 }

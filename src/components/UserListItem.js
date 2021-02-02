@@ -3,10 +3,9 @@ import UserAddress from './UserAddress';
 
 const UserListItem = (props) => {
 
-    const {showUserAddress, onShowUserInfo, onShowUserAddress, user: {firstName, lastName, id, online, address}} = props;
+    const {showUserAddress, onShowUserInfo, onShowUserAddress, user: {firstName, lastName, online, address}} = props;
 
-    return <>
-        <div>
+    return <li>
             <p
                 className={online ? 'online userName' : 'offline userName'}
                 onClick={onShowUserInfo}>
@@ -19,8 +18,7 @@ const UserListItem = (props) => {
                 onClick={onShowUserAddress}
             />
             {showUserAddress && <UserAddress userAddress={address}/>}
-        </div>
-    </>
+        </li>
 };
 
 export default UserListItem

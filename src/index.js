@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import A from './A';
-import UserList from './UserList';
+import A from './components/A';
+import UserList from './components/UserList';
 
 const users = [
     {   firstName: 'Andrii',
@@ -40,7 +40,7 @@ const users = [
 
 ReactDOM.render(
   <React.StrictMode>
-    <A />
+      <A />
       <UserList userList = {users}/>
   </React.StrictMode>,
   document.getElementById('root')
