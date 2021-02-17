@@ -1,76 +1,93 @@
 import React, {Component} from 'react';
 import './App.css';
 
+const NOT_VALIDATED = Symbol.for('NOT_VALIDATED');
+const VALID = Symbol.for('VALID');
+const INVALID = Symbol.for('INVALID');
+const DEFAULT_PROPERTY_VALUE = {
+    value: '',
+    status: NOT_VALIDATED
+};
+
+const VALIDATION_FORM = {
+    email: /\S+@\S+\.\S+/,
+    password: /\b\S{6,12}\b/
+};
+
 class App extends Component {
 
-    state = {
-        registrationForm: {
-            email: '',
-            password: '',
-            confirmConditions: false,
-        },
-        emailIsValid: true,
-        passwordIsValid: true,
-        validationForm: {
-            email: /\S+@\S+\.\S+/,
-            password: /\b\S{6,12}\b/
-        }
-    };
+    constructor() {
+        super();
+        this.state = {
+            email: DEFAULT_PROPERTY_VALUE,
+            password: DEFAULT_PROPERTY_VALUE,
+            confirmConditions: DEFAULT_PROPERTY_VALUE,
+        };
+
+        this.emailInput = React.createRef();
+    }
+
+    componentDidMount(){
+        this.emailInput.current.focus();
+    }
 
     onChangeInput = (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        const name = {[e.target.name]: value};
+        let formItem = e.target.name;
+        console.log(formItem, value);
 
-        this.setState({
-            registrationForm: {...this.state.registrationForm, ...name}
+        this.setState((state) => {
+            return {[formItem]: { ...state[formItem], value}}
         });
 
-        if (!this.state[e.target.name + 'IsValid'] && e.target.type !== 'checkbox') {
+        const isPropertyNeedValidation = this.state[formItem].status !== NOT_VALIDATED;
+        const isNotCheckbox = e.target.type !== 'checkbox';
+
+        if (isPropertyNeedValidation && isNotCheckbox) {
             this.validateFormItem(e);
         }
     };
 
     onSubmit = (e) => {
-
         e.preventDefault();
-        console.log(this.state.registrationForm);
-        this.setState({
-            registrationForm: {
-                email: '',
-                password: '',
-                confirmConditions: false,
-            }
-        })
+        console.log('submit');
+
     };
 
     validateFormItem = (e) => {
         const formItem = e.target.name;
-        console.log(this.state.validationForm[formItem]);
+        console.log(this.state[formItem]);
 
-        this.setState({
-            [formItem + 'IsValid']: (this.state.validationForm[formItem]).test(e.target.value),
+        let isValid = (VALIDATION_FORM[formItem]).test(e.target.value);
+        this.setState((state) => {
+            return {
+                [formItem]: {
+                    ...state[formItem],
+                    status: (isValid ? VALID : INVALID)
+                }
+            }
         });
     };
 
     render() {
         console.log('render()');
         const {
-            registrationForm: {email, password, confirmConditions},
-            emailIsValid, passwordIsValid,
+            email, password, confirmConditions
         } = this.state;
 
-        let disableSubmit = !(email && password && confirmConditions && emailIsValid && passwordIsValid);
-        console.log(disableSubmit);
+        const disableSubmit = !(email.status === VALID && password.status === VALID && confirmConditions.value);
+        console.log(this.state);
 
 
         return (
             <div className="App">
                 <h1>Sign in</h1>
                 <form onSubmit={this.onSubmit}>
-                    <input type="text" id="email" name="email" value={email}
+                    <input type="text" id="email" name="email" value={email.value}
+                           ref={this.emailInput}
                            onChange={this.onChangeInput}
                            onBlur={this.validateFormItem}/>
-                    {emailIsValid ?
+                    {email.status !== INVALID ?
                         <label htmlFor="email"> Enter your email</label> :
                         <label htmlFor="email" className="wrongFormat"> Wrong e-mail format</label>}
                     <br/><br/>
@@ -78,11 +95,11 @@ class App extends Component {
                            placeholder='from 6 to 12 symbols'
                            id='password'
                            name="password"
-                           value={password}
+                           value={password.value}
                            onChange={this.onChangeInput}
                            onBlur={this.validateFormItem}
                     />
-                    {passwordIsValid ?
+                    {password.status !== INVALID ?
                         <label htmlFor="password"> password</label> :
                         <label htmlFor="password" className="wrongFormat"> Password should consist from 6 to 12
                             symbols</label>}
@@ -90,7 +107,7 @@ class App extends Component {
                     <input type="checkbox"
                            id="confirmConditions"
                            name='confirmConditions'
-                           checked={confirmConditions}
+                           checked={confirmConditions.value}
                            onChange={this.onChangeInput}/>
                     <label htmlFor='confirmConditions'> I have read and accepted privacy policy</label><br/><br/>
                     <input type="submit" id="submit" name="submit" value="Submit" disabled={disableSubmit}/>
