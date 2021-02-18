@@ -10,8 +10,8 @@ const DEFAULT_PROPERTY_VALUE = {
 };
 
 const VALIDATION_FORM = {
-    email: /\S+@\S+\.\S+/,
-    password: /\b\S{6,12}\b/
+    email: /^\S+@\S+\.\S+$/,
+    password: /^\S{6,12}$/
 };
 
 class App extends Component {
@@ -56,9 +56,11 @@ class App extends Component {
 
     validateFormItem = (e) => {
         const formItem = e.target.name;
-        console.log(this.state[formItem]);
 
-        let isValid = (VALIDATION_FORM[formItem]).test(e.target.value);
+        const isValid = (VALIDATION_FORM[formItem]).test(e.target.value);
+
+        console.log(this.state[formItem], formItem, isValid);
+
         this.setState((state) => {
             return {
                 [formItem]: {
