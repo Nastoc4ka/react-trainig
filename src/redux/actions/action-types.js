@@ -1,0 +1,8 @@
+const SAVE_INPUT_NAME = 'SAVE_INPUT_NAME';
+const DELETE_NAME = 'DELETE_NAME';
+
+export {
+    SAVE_INPUT_NAME,
+    DELETE_NAME
+}
+
